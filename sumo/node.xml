@@ -1,0 +1,5 @@
+<nodes>
+    <node id="right"  x="1001.0" y="0.0"/>
+    <node id="middle" x="1.0"    y="0.0"/>
+    <node id="left"   x="0.0"    y="0.0"/>
+</nodes>

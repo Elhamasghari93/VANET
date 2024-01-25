@@ -1,0 +1,7 @@
+<edges>
+    <edge from="right"   to="middle"   id="r2m"  numLanes="3"  speed="90"/>
+    <edge from="middle"  to="left"     id="l2r"  numLanes="3"  speed="90"/>
+
+    <edge from="left"    to="middle"   id="l2m" numLanes="3"  speed="90"/>
+    <edge from="middle"  to="right"    id="m2l" numLanes="3"  speed="90"/> 
+</edges>

@@ -125,3 +125,7 @@ finally:
     plt.xlabel('Simulation Step')
     plt.ylabel('PCH Value')
     plt.show()
+
+
+# Step 1 : Clustering algorithm (sklearn.cluster.KMeans)
+# Step 2 : Run your method inside the clusters

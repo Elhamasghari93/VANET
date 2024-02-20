@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 
 # Initialize simulation parameters
 packet_forwarding_betha = 1.2
+main_formula_lambda = 0.3
+is_neighber_distance_threshold = 100
 
 weighted_distance_mult = 0.1
 weighted_velocity_mult = 0.1
@@ -32,6 +34,10 @@ def get_distance_2D(a, b):
     return traci.simulation.getDistance2D(
         get_position(a)[0], get_position(a)[1],
         get_position(b)[0], get_position(b)[1], False)
+
+# Checks if the distance between to vehicles is less than a threshold
+def check_distance(v1, v2):
+    return get_distance_2D(v1, v2) < is_neighber_distance_threshold
 
 def get_relative_speed(a, b):
     return abs(traci.vehicle.getSpeed(a) - traci.vehicle.getSpeed(b))
@@ -62,18 +68,27 @@ def simulate_packeting():
     if num_messages == number_of_dropped_packets:
         return 0
 
-   Direct_trust = number_of_forwarded_packets / (num_messages )
-    return trust
+    direct_trust = number_of_forwarded_packets / (num_messages )
+    return direct_trust
 
 # Function to calculate IndirectTrust for a vehicle
 def calculate_indirect_trust(vehicle_n, vehicle_ids):
     indirect_trust = 0
     for vehicle_m in vehicle_ids:
-        if vehicle_n != vehicle_m:
+        if vehicle_n != vehicle_m and check_distance(vehicle_n, vehicle_m):
             # Assuming that simulate_packeting calculates DirectTrust for now
             direct_trust = simulate_packeting()
             indirect_trust += direct_trust
     return indirect_trust
+
+def calculate_trust(vehicle_n, vehicle_ids):
+    direct_trust = simulate_packeting()
+    indirect_trust = calculate_indirect_trust(vehicle_n, vehicle_ids)
+    trust = main_formula_lambda * direct_trust + (1 - main_formula_lambda) * indirect_trust
+    return trust
+
+steps = []
+pch_values = []
 
 # Main simulation loop
 traci.start(sumo_cmd)
@@ -95,9 +110,10 @@ try:
             
             relative_distance = get_distance_2D(vehicle_a, vehicle_b)
             relative_velocity = get_relative_speed(vehicle_a, vehicle_b)
-            direct_trust = simulate_packeting()  # This should be the actual DirectTrust calculation
+            # direct_trust = simulate_packeting()  # This should be the actual DirectTrust calculation
+            trust = calculate_trust(vehicle_a, vehicle_ids)
 
-            pch = calculate_poss(relative_distance, relative_velocity, direct_trust)
+            pch = calculate_poss(relative_distance, relative_velocity, trust)
             steps.append(step)
             pch_values.append(pch)
 

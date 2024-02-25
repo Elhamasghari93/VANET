@@ -71,17 +71,17 @@ def main():
 
     traci.close()
 
-    # Plot the number of vehicles in each cluster over time
-    plt.figure(figsize=(10, 6))
-    for cluster_id in range(min(5, len(vehicle_ids))):  # Assuming max 5 clusters or less depending on vehicle count
-        sizes = [step.get(cluster_id, 0) for step in cluster_sizes_over_steps]
-        plt.plot(sizes, label=f'Cluster {cluster_id + 1}')
+    # # Plot the number of vehicles in each cluster over time
+    # plt.figure(figsize=(10, 6))
+    # for cluster_id in range(min(5, len(vehicle_ids))):  # Assuming max 5 clusters or less depending on vehicle count
+    #     sizes = [step.get(cluster_id, 0) for step in cluster_sizes_over_steps]
+    #     plt.plot(sizes, label=f'Cluster {cluster_id + 1}')
 
-    plt.title('Number of Vehicles in Each Cluster Over Time')
-    plt.xlabel('Simulation Step')
-    plt.ylabel('Number of Vehicles')
-    plt.legend()
-    plt.show()
+    # plt.title('Number of Vehicles in Each Cluster Over Time')
+    # plt.xlabel('Simulation Step')
+    # plt.ylabel('Number of Vehicles')
+    # plt.legend()
+    # plt.show()
 
 if __name__ == "__main__":
     main()

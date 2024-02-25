@@ -112,6 +112,13 @@ try:
                 # Store features for clustering
                 vehicle_features.append([relative_distance, relative_velocity, trust])
                 
+                # Perform KMeans clustering after simulation ends
+                if vehicle_features:
+                    X = np.array(vehicle_features)
+                    k = 3  # Adjust based on your needs
+                    kmeans = KMeans(n_clusters=k, random_state=0)
+                    clusters = kmeans.fit_predict(X)
+                
                 pch = calculate_poss(relative_distance, relative_velocity, trust)
                 steps.append(step)
                 pch_values.append(pch)
@@ -122,9 +129,9 @@ finally:
     traci.close()
 
 # Perform KMeans clustering after simulation ends
-if vehicle_features:
-    X = np.array(vehicle_features)
-    k = 3  # Adjust based on your needs
-    kmeans = KMeans(n_clusters=k, random_state=0)
-    clusters = kmeans.fit_predict(X)
+# if vehicle_features:
+#     X = np.array(vehicle_features)
+#     k = 3  # Adjust based on your needs
+#     kmeans = KMeans(n_clusters=k, random_state=0)
+#     clusters = kmeans.fit_predict(X)
    
